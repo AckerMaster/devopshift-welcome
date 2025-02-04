@@ -1,0 +1,3 @@
+GITBRANCH=workshop/terraform
+GITURL=github.com/AckerMaster/devopshift-welcome.git
+GITUSERNAME=AckerMaster
