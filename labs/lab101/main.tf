@@ -6,13 +6,10 @@ variable "region" {
   default = "us-east-1"
 }
 
-terraform {
-  required_providers {
-    time = {
-      source = "hashicorp/time"
-      version = "0.12.1"
-    }
-  }
+
+# Mocked IP var
+variable "emptyip" {
+    default = ""
 }
 
 resource "aws_security_group" "sg" {
@@ -32,20 +29,24 @@ resource "aws_security_group" "sg" {
 }
 
 resource "aws_instance" "vm" {
-  ami           = "ami-0ff8a91507f77f867"
+  
+  ami           = "ami-0c02fb55956c7d316"
   instance_type = "t2.micro"
 
   vpc_security_group_ids = [aws_security_group.sg.id]
 
   tags = {
-    Name = "liad-vm"
+    Name = "yaniv-vm"
   }
 }
 
-resource "time_sleep" "wait_for_ip" {
-  create_duration = "10s"  # Wait for 10 seconds
-}
 
+
+output "vm_public_ip" {
+  value       = aws_instance.vm.public_ip
+  description = "Public IP address of the VM"
+  depends_on = [ null_resource.check_public_ip ]
+}
 
 resource "null_resource" "check_public_ip" {
   provisioner "local-exec" {
@@ -54,16 +55,10 @@ resource "null_resource" "check_public_ip" {
         echo "ERROR: Public IP address was not assigned." >&2
         exit 1
         else
-        echo "we got the IP! ${aws_instance.vm.public_ip}"
+        echo "We got the IP! ${aws_instance.vm.public_ip}"
       fi
     EOT
   }
 
   depends_on = [aws_instance.vm]
-}
-
-output "vm_public_ip" {
-  value      = aws_instance.vm.public_ip
-  depends_on = [null_resource.check_public_ip]
-  description = "Public IP address of the VM"
 }
