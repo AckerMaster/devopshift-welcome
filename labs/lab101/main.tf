@@ -46,11 +46,6 @@ resource "time_sleep" "wait_for_ip" {
   create_duration = "10s"  # Wait for 10 seconds
 }
 
-resource "null_resource" "run_script" {
-  provisioner "local-exec" {
-    command = "echo 'good morning lab'"
-  }
-}
 
 resource "null_resource" "check_public_ip" {
   provisioner "local-exec" {
@@ -58,6 +53,8 @@ resource "null_resource" "check_public_ip" {
       if [ -z "${aws_instance.vm.public_ip}" ]; then
         echo "ERROR: Public IP address was not assigned." >&2
         exit 1
+        else
+        echo "we got the IP! ${aws_instance.vm.public_ip}"
       fi
     EOT
   }
