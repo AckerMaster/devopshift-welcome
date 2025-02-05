@@ -36,7 +36,7 @@ resource "aws_instance" "vm" {
   vpc_security_group_ids = [aws_security_group.sg.id]
 
   tags = {
-    Name = "yaniv-vm"
+    Name = "liad-vm"
   }
 }
 
