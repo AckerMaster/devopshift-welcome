@@ -9,17 +9,18 @@ servers_dict = {
 
 
 while True:
+    user_input = input("Please Enter server name: ")
     try:
-        x = input("Please Enter server name: ")
-        print(f"{x} is {servers_dict[x]}")
+        print(f"{user_input} is {servers_dict[user_input]}")
         break
-    except:
-        if x == "quit":
+    except KeyError:
+            print("Server is not recognized. type 'quit' to leave or 'list' for servers list")
+    
+    if (user_input == "quit"):
             print("Okay, Bye")
             break
-        if x == "list":
-            print("Current Servers are: ")
-            for item in servers_dict:
-                print(item)
-        else:
-            print("Server is not recognized. type 'quit' to leave or 'list' for servers list")
+    if (user_input == "list"):
+        print("Current Servers are: ")
+        for item in servers_dict:
+            print(item)
+        
