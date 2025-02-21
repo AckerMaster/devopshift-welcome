@@ -14,6 +14,7 @@ resource "aws_instance" "web_server" {
   instance_type = "t3.medium"
   availability_zone = "us-east-1a"
   subnet_id = aws_subnet.public[0].id
+  associate_public_ip_address = true
 
   tags = {
     Name = "WebServer"
