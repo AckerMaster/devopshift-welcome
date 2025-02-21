@@ -3,6 +3,12 @@ provider "aws" {
   region = "us-east-1"
 }
 
+resource "random_string" "suffix" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
 resource "aws_instance" "web_server" {
   ami = "ami-0e1bed4f06a3b463d"
   instance_type = "t3.medium"
@@ -23,7 +29,7 @@ resource "aws_lb" "application_lb" {
 }
 
 resource "aws_security_group" "lb_sg" {
-  name        = "lb_security_group"
+  name        = "lb_security_group_${random_string.suffix.result}"
   description = "Allow HTTP inbound traffic"
 
   ingress {
@@ -46,7 +52,7 @@ resource "aws_lb_listener" "http_listener" {
 }
 
 resource "aws_lb_target_group" "web_target_group" {
-  name     = "web-target-group"
+  name     = "web-target-group-${random_string.suffix.result}"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
