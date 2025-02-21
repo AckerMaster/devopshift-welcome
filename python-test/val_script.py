@@ -11,7 +11,7 @@ def get_instance_details(instance_id):
     ec2_client = boto3.client("ec2")
     try:
         response = ec2_client.describe_instances(InstanceIds=[instance_id])
-        instance = response["Reservation"][0]["Instances"][0]
+        instance = response["Reservations"][0]["Instances"][0]
         return {
             "instance_id": instance_id,
             "instance_state": instance["State"]["Name"],
@@ -25,7 +25,7 @@ def get_instance_details(instance_id):
 def get_alb_details(load_balancer_name):
     elb_client = boto3.client("elbv2")
     try:
-        response = elb_client.describe_load_balancers(Name=[load_balancer_name])
+        response = elb_client.describe_load_balancers(Names=[load_balancer_name])
         alb = response["LoadBalancers"][0]
         return {
             "load_balancer_dns": alb["DNSName"]
