@@ -1,5 +1,7 @@
-*** Python Test ***
+ # ------------------------ Python Test ------------------------ #
+ 
  Name: Liad Ackerman
+ 
  ID: 315487710
 
  # ------------------- How to run the script ------------------- #
