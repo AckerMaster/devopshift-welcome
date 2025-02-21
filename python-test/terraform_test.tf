@@ -7,6 +7,7 @@ resource "aws_instance" "web_server" {
   ami = "ami-0e1bed4f06a3b463d"
   instance_type = "t3.medium"
   availability_zone = "us-east-1a"
+  subnet_id = aws_subnet.public[0].id
 
   tags = {
     Name = "WebServer"
@@ -65,4 +66,13 @@ resource "aws_subnet" "public" {
 
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
+}
+
+
+output "instance_id" {
+  value = aws_instance.web_server.id
+}
+
+output "alb_dns" {
+  value = aws_lb.application_lb.dns_name
 }
