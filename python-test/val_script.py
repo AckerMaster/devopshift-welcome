@@ -6,7 +6,7 @@ def load_terraform_output():
         state = json.load(f)
     return state
 
-
+#getting ec2 info
 def get_instance_details(instance_id):
     ec2_client = boto3.client("ec2")
     try:
@@ -21,6 +21,7 @@ def get_instance_details(instance_id):
         print(f"error getting ec2 info: {exc}")
         return None
 
+# getting alb info
 def get_alb_details(load_balancer_name):
     elb_client = boto3.client("elbv2")
     try:
@@ -33,3 +34,29 @@ def get_alb_details(load_balancer_name):
     except Exception as exc:
         print(f"error getting alb info: {exc}")
         return None
+
+# validating and saving info into json file
+def validate():
+    state = load_terraform_output()
+    instance_id = state["outputs"]["instance_id"]["value"]
+    alb_dns = state["outputs"]["alb_dns"]["value"]
+    load_balancer_name = alb_dns.split(".")[0]
+
+    # getting the instance info from our previous func
+    ec2_data = get_instance_details(instance_id)
+
+    # getting the alb info from our previous func
+    alb_data = get_alb_details(load_balancer_name)
+
+    if ec2_data and alb_data:
+        # putting the data together as we learned from Ofer
+        validation_data = {**ec2_data, **alb_data}
+
+        with open("aws_validation.json", "w") as f:
+            json.dump(validation_data, f, indent=4)
+        print("aws val data saved in 'aws_validation.json'")
+    else:
+        print("failed to get info from aws ..")
+
+if __name__ == "__main__":
+    validate()
