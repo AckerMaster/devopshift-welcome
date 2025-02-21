@@ -21,3 +21,15 @@ def get_instance_details(instance_id):
         print(f"error getting ec2 info: {exc}")
         return None
 
+def get_alb_details(load_balancer_name):
+    elb_client = boto3.client("elbv2")
+    try:
+        response = elb_client.describe_load_balancers(Name=[load_balancer_name])
+        alb = response["LoadBalancers"][0]
+        return {
+            "load_balancer_dns": alb["DNSName"]
+        }
+
+    except Exception as exc:
+        print(f"error getting alb info: {exc}")
+        return None
