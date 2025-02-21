@@ -1,0 +1,6 @@
+{
+    "instance_id": "i-03f2e1eae4afe570c",
+    "instance_state": "running",
+    "public_ip": "not found",
+    "load_balancer_dns": "liad-alb-1747956557.us-east-1.elb.amazonaws.com"
+}
