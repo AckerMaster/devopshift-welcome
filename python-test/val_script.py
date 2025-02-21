@@ -21,15 +21,18 @@ def get_instance_details(instance_id):
         print(f"error getting ec2 info: {exc}")
         return None
 
-# getting alb info
-def get_alb_details(load_balancer_name):
+# getting alb info if exists
+def get_alb_details(my_dns):
     elb_client = boto3.client("elbv2")
     try:
-        response = elb_client.describe_load_balancers(Names=[load_balancer_name])
-        alb = response["LoadBalancers"][0]
-        return {
-            "load_balancer_dns": alb["DNSName"]
-        }
+        response = elb_client.describe_load_balancers()
+        for alb in response["LoadBalancers"]:
+            if alb["DNSName"] == my_dns:
+                return {
+                        "load_balancer_dns": alb["DNSName"]
+                    }
+        print(f"no alb with dns: {my_dns}")
+        return None
 
     except Exception as exc:
         print(f"error getting alb info: {exc}")
@@ -40,13 +43,12 @@ def validate():
     state = load_terraform_output()
     instance_id = state["outputs"]["instance_id"]["value"]
     alb_dns = state["outputs"]["alb_dns"]["value"]
-    load_balancer_name = alb_dns.split(".")[0]
 
     # getting the instance info from our previous func
     ec2_data = get_instance_details(instance_id)
 
     # getting the alb info from our previous func
-    alb_data = get_alb_details(load_balancer_name)
+    alb_data = get_alb_details(alb_dns)
 
     if ec2_data and alb_data:
         # putting the data together as we learned from Ofer
