@@ -40,6 +40,7 @@ resource "aws_instance" "web_server" {
   instance_type     = "{{ instance_type }}"
   availability_zone = "{{ availability_zone }}"
   subnet_id        = aws_subnet.public[0].id
+  associate_public_ip_address = true
 
   tags = {
     Name = "WebServer"
