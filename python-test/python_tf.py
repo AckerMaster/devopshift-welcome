@@ -21,7 +21,7 @@ def run_tf():
             return
 
         print("applying terraform..")
-        apply_return_code, apply_stdout, apply_stderr = tf.apply()
+        apply_return_code, apply_stdout, apply_stderr = tf.apply(skip_plan=True)
         print(apply_stdout)
 
         if apply_return_code != 0:
