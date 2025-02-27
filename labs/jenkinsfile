@@ -25,6 +25,7 @@ pipeline {
                script {
                    // If APP_DEBUG is set to 'true' set env.BRANCH_NAME to DEBUG_BRANCH
                    env.BRANCH_NAME = env.APP_DEBUG == 'true' ? env.DEBUG_BRANCH : env.BRANCH_NAME
+                   echo "hello liad"
                    // Call the mock deployApp function with the current branch name
                    myLibrary.deployApp(env.BRANCH_NAME)
                }
