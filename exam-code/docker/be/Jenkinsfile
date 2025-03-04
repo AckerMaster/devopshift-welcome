@@ -1,0 +1,23 @@
+pipeline {
+    agent {
+        docker {
+            image 'python:3.10'
+        }
+    }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('docker-hub-creds')
+        DOCKER_REGISTRY = 'ackermaster'
+        REPO_NAME = 'be-exam'  // Change to 'be-exam' for backend pipeline
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
+        
+    }
+    stages {
+        
+        stage('Clone Repository') {
+            steps {
+                git branch: 'workshop/argo-jenkins-exam', url: 'https://github.com/AckerMaster/devopshift-welcome.git'
+            }
+        }
+        
+    }
+}
