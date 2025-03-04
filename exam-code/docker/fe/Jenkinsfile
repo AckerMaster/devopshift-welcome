@@ -20,7 +20,7 @@ pipeline {
         }
 
         stage('Lint & Security Scan') {
-            paralel{
+            parallel{
 
                 stage('Flake8 Linting'){
                     dir('exam-code/docker/fe/src'){
