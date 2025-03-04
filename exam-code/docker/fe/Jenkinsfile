@@ -19,6 +19,15 @@ pipeline {
             }
         }
 
+        stage('Prepare Environment') {
+            steps {
+                sh '''
+                    apt-get update && apt-get install -y docker.io curl
+                    docker --version
+                '''
+            }
+        }
+
         stage('Lint & Security Scan') {
             parallel{
 
@@ -90,4 +99,10 @@ pipeline {
 
     }
 
+
+    post {
+        always {
+            sh 'docker logout'
+        }
+    }
 }
