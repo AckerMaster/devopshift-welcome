@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.10'
+            image 'python:3.12'
         }
     }
     environment {
@@ -12,14 +12,8 @@ pipeline {
         
     }
     stages {
-        
-        stage('Clone Repository') {
-            steps {
-                git branch: 'workshop/argo-jenkins-exam', url: 'https://github.com/AckerMaster/devopshift-welcome.git'
-            }
-        }
 
-        stage('Prepare Environment') {
+         stage('Prepare Environment') {
             steps {
                 sh '''
                     apt-get update && apt-get install -y docker.io curl
@@ -27,6 +21,14 @@ pipeline {
                 '''
             }
         }
+        
+        stage('Clone Repository') {
+            steps {
+                git branch: 'workshop/argo-jenkins-exam', url: 'https://github.com/AckerMaster/devopshift-welcome.git'
+            }
+        }
+
+       
 
         stage('Lint & Security Scan') {
             parallel{
