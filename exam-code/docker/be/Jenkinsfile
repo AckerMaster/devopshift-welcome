@@ -75,5 +75,13 @@ pipeline {
                 }
             }
         }
+
+        stage('Push to Docker Hub'){
+            steps{
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh "docker push ${DOCKER_REGISTRY}/${REPO_NAME}:$BUILD_NUMBER"
+                sh "docker push ${DOCKER_REGISTRY}/${REPO_NAME}:latest"
+            }
+        }
     }
 }
