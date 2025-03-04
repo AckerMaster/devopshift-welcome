@@ -38,6 +38,13 @@ pipeline {
             }
         }
     
-    
+        stage('Install Dependencies'){
+            steps{
+                dir('exam-code/docker/be'){
+                    sh 'pip install -r requirements.txt'
+                }
+            }
+        }
+
     }
 }
