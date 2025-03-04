@@ -63,5 +63,17 @@ pipeline {
             }
         }
 
+        stage('Integration Test with Docker Compose'){
+            steps{
+                dir('exam-code/docker'){
+                    sh """
+                    docker-compose up -d
+                    sleep 10
+                    curl -f http://localhost:5001 || exit 1
+                    docker-compose down
+                    """
+                }
+            }
+        }
     }
 }
