@@ -55,7 +55,6 @@ pipeline {
             steps{
                 dir('exam-code/docker/be'){
                     sh "pip install -r requirements.txt"
-                    sh 'echo "hello to argocd"' // added echo to test sync in argocd
                 }
             }
         }
