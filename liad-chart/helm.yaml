@@ -98,3 +98,5 @@ spec:
       command: ['wget']
       args: ['release-name-liad-chart:80']
   restartPolicy: Never
+
+  
